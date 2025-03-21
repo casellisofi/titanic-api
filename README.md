@@ -35,7 +35,7 @@ titanic-api/
 ### **Clonar el repositorio:**
 
 ```bash
-git clone https://github.com/tu_usuario/titanic-api.git
+git clone https://github.com/casellisofi/titanic-api.git
 cd titanic-api
 ```
 
