@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 import numpy as np
-from app.core.model_loader import load_model  # Importar la carga del modelo desde un módulo separado
-from app.schemas import PassengerData, PredictionResponse  # Importar esquemas de validación
+from app.core.model_loader import load_model 
+from app.schemas import PassengerData, PredictionResponse
 
 # -----------------------------------------------------------------------------------
 # TITANIC SURVIVAL PREDICTION API
