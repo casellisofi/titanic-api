@@ -1,0 +1,12 @@
+# Entornos virtuales
+venv/
+.env
+*.env
+
+# Cache
+__pycache__/
+.dist
+.vscode
+
+# Notebooks
+*.ipynb
