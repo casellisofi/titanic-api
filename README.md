@@ -13,6 +13,9 @@ titanic-api/
 │   ├── core/
 │   │   ├── __init__.py
 │   │   └── model_loader.py    
+│   ├── utils/
+│   │   ├── __init__.py
+│   │   └── preprocessing.py   
 │   ├── __init__.py
 │   ├── main.py                  
 │   └── schemas.py              
@@ -21,6 +24,8 @@ titanic-api/
 ├── tests/
 │   ├── __init__.py
 │   └── test_main.py 
+│   └── test_model_loader.py 
+│   └── test_preprocessing.py 
 ├── .gitignore       
 ├── docker-compose.yml     
 ├── Dockerfile  
