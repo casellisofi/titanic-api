@@ -154,4 +154,6 @@ curl -X POST "http://127.0.0.1:8000/predict/" ^
 
 ```bash
 pytest tests/test_main.py
+pytest tests/test_model_loader.py
+pytest tests/test_preprocessing.py
 ```
