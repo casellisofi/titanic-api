@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 import numpy as np
 from app.core.model_loader import load_model 
 from app.schemas import PassengerData, PredictionResponse
+from app.utils.preprocessing import convert_passenger_to_array
 
 # -----------------------------------------------------------------------------------
 # TITANIC SURVIVAL PREDICTION API
@@ -10,64 +11,44 @@ from app.schemas import PassengerData, PredictionResponse
 # para predecir si un pasajero del Titanic habría sobrevivido o no, en base a sus datos.
 # -----------------------------------------------------------------------------------
 
-# Inicialización de la aplicación FastAPI con metadatos para documentación automática
 app = FastAPI(
     title="Titanic Survival Prediction API",
-    description="API para predecir la supervivencia de pasajeros del Titanic usando un modelo de Machine Learning",
+    description="API to predict Titanic passenger survival using a trained Machine Learning model",
     version="1.0",
     openapi_url="/docs/openapi.json",
     docs_url="/docs",
     redoc_url="/redoc"
 )
 
-# Cargar el modelo entrenado al iniciar la aplicación
 modelo = load_model()
 
-@app.post("/predict/", response_model=PredictionResponse, summary="Realizar predicción de supervivencia")
+@app.post("/predict/", response_model=PredictionResponse, summary="Predict passenger survival")
 def predict_survival(data: PassengerData):
     """
-    Realiza una predicción sobre la supervivencia del pasajero basándose en sus características.
+    Predict whether a Titanic passenger would have survived based on their personal features.
 
-    ### Campos esperados:
-    - **pclass**: Clase del pasajero (1 = Primera, 2 = Segunda, 3 = Tercera)
-    - **sex**: Género codificado (0 = Mujer, 1 = Hombre)
-    - **age**: Edad del pasajero en años
-    - **sibsp**: Número de hermanos/esposos a bordo
-    - **parch**: Número de padres/hijos a bordo
-    - **fare**: Tarifa pagada por el pasajero
-    - **embarked**: Puerto de embarque (0, 1, 2)
+    Args:
+        **data (PassengerData)**: Passenger input including class, gender, age, family info, fare and embarkation port.
 
-    ### Respuesta:
-    - **survived**: 1 (Sobrevivió) o 0 (No sobrevivió)
+    Returns:
+        **dict**: A JSON object with the survival prediction (1 or 0).
+
+    Raises:
+        **HTTPException**: 500 if an internal error occurs during prediction.
     """
     try:
-        # Convertir el input validado en un arreglo NumPy con la estructura requerida por el modelo
-        input_data = np.array([[
-            data.pclass,
-            data.sex,
-            data.age,
-            data.sibsp,
-            data.parch,
-            data.fare,
-            data.embarked
-        ]])
-
-        # Generar la predicción con el modelo cargado
+        input_data = convert_passenger_to_array(data)
         prediction = modelo.predict(input_data)[0]
-
-        # Retornar la respuesta en formato JSON
         return {"survived": int(prediction)}
-
     except Exception as e:
-        # Manejo de errores internos del modelo o entrada inesperada
-        raise HTTPException(status_code=500, detail=f"Error en la predicción: {e}")
+        raise HTTPException(status_code=500, detail=f"Prediction error: {e}")
 
-@app.get("/", summary="Verificar el estado de la API")
+@app.get("/", summary="Check API health status")
 def root():
     """
-    Verifica que la API esté operativa.
+    Health check endpoint to verify the API is operational.
 
-    ### Respuesta:
-    - **message**: Mensaje de confirmación del estado del servicio.
+    Returns:
+        **dict**: A confirmation message with status.
     """
-    return {"message": "API de predicción del Titanic funcionando correctamente"}
+    return {"message": "Titanic prediction API is up and running"}

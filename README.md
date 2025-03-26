@@ -127,7 +127,7 @@ curl -X POST "http://127.0.0.1:8000/predict/" ^
    ```
    http://127.0.0.1:8000/predict/
    ```
-4. Ejemplo de prueba:
+4. Ejemplo de Body para pruebas:
    ```json
    {
      "pclass": 3,

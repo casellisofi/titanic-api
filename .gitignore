@@ -7,6 +7,7 @@ venv/
 __pycache__/
 .dist
 .vscode
+.pytest_cache
 
 # Notebooks
 *.ipynb
